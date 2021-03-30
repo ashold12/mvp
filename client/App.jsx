@@ -5,12 +5,28 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-
+      concerts: [],
+      search: ''
     }
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange (e) {
+    let val = e.target.value;
+    let name = e.target.name;
+    this.setState({
+      [name]: val
+    })
   }
 
   render() {
-    return( <h1>Hey guys its me</h1> )
+    let { search } = this.state;
+    return (
+      <>
+        <h1>Concerts?</h1>
+        <input type="text" name="search" value={search} onChange={this.handleChange} placeholder="Enter your city here:"/>
+      </>
+    )
   }
 }
 
