@@ -2,6 +2,7 @@ import React from 'react'
 import handler from './handler.js'
 import ConcertList from './ConcertList'
 import SavedList from './SavedList'
+import example from './example.js'
 import ls from 'local-storage'
 
 class App extends React.Component {
@@ -22,9 +23,15 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-    this.setState({
-      saved: ls.get('saved') || []
-    })
+    let today = new Date().toISOString().substring(0,10)
+    let saved = ls.get('saved') || []
+    this.setState({ saved: saved })
+    saved.forEach((entry) => {
+      let date = entry.start.substring(0,10)
+      if (date === today) {
+        alert(`${entry.title} is TODAY!!!`);
+      }
+    });
   }
 
   remove(e, index) {
@@ -54,6 +61,12 @@ class App extends React.Component {
   handleSubmit (e) {
     e.preventDefault();
     let { city, state } = this.state;
+    if (city === 'dev') {
+      this.setState({
+        concerts: example
+      })
+      return
+    }
     if (!city || !state) return
     handler.getEvents(city, state, ({ data }) => {
       this.clearFields()

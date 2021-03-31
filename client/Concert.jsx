@@ -18,7 +18,6 @@ class Concert extends React.Component {
   render(){
     let { concert } = this.props
     let venue;
-    debugger;
     for (let x = 0; x< concert.entities.length; x++ ) {
       let entity = concert.entities[x]
       console.log(entity)
