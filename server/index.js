@@ -18,20 +18,53 @@ app.get('/concerts', (req, res) => {
   }
   const { city, region } = req.query
 
-  const parameters = {
-    url: `https://api.predicthq.com/v1/places/?q=${city}`,
+  const locationsParams = {
+    url: `https://api.predicthq.com/v1/places/?q=${city}&limit=5`,
     headers: {
       Authorization: `Bearer ${TOKEN.TOKEN}`,
     },
   }
-  axios.get(parameters.url, {headers: parameters.headers}).then((response) => {
-    res.send(response.data)
+  axios.get(locationsParams.url, {headers: locationsParams.headers})
+  .then(({ data }) => {
+    let { results } = data;
+    let final;
+    for (entry of results) {
+      if (entry.region === region) {
+        final = entry
+        break
+      }
+    }
+    if (!final) final = results[0]
+    let location = final.location
+
+    let date = new Date();
+    date = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate();
+
+    console.log(date);
+
+    const eventParams = {
+      url: `https://api.predicthq.com/v1/events`,
+      headers: {
+        Authorization: `Bearer ${TOKEN.TOKEN}`,
+      },
+      params: {
+        'within': `100km@${location[1]},${location[0]}`,
+        'category': 'concerts',
+        'sort': 'start',
+        'active.gte': date,
+      },
+    }
+
+    return axios.get(eventParams.url, {headers: eventParams.headers, params: eventParams.params})
   })
+  .then(({ data }) => res.send(data.results))
   .catch((err) => {
     console.log(err);
     res.status(500).send(err)
   })
 })
+
+
 
 
 
