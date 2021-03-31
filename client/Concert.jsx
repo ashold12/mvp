@@ -29,16 +29,26 @@ class Concert extends React.Component {
     }
 
     if (venue) {
-      const { save, index } = this.props
+      const { save, index, remove } = this.props
+      const openMap = () => {
+        let address = venue.formatted_address.split('\n').join(' ')
+        const url = `https://www.google.com/maps/search/${address}`
+        const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+        if (newWindow) newWindow.opener = null
+      }
       return(
         <div onClick={this.clicker}>
           <h6>{concert.title}</h6>
           {this.state.clicked &&
             <>
               <div>----------------------------------------------------------------------------------------------</div>
-              <div>Address:{venue.formatted_address}</div><br />
-              <div>Name:{venue.name}</div><br />
-              <button onClick={ (e) => {save(e, index)} }>Save</button>
+              <span>Address: {venue.formatted_address}  </span>
+              <button onClick={openMap}>Directions</button><br /><br />
+              <div>Name: {venue.name}</div><br />
+              <div>Date: {concert.start.substring(0,10)}</div><br />
+              {save ?
+                <button onClick={ (e) => {save(e, index)} }>Save</button> :
+                <button onClick={ (e) => {remove(e, index)} }>Delete</button> }
               <div>----------------------------------------------------------------------------------------------</div>
             </>
           }

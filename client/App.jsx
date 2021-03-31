@@ -1,6 +1,7 @@
 import React from 'react'
 import handler from './handler.js'
 import ConcertList from './ConcertList'
+import SavedList from './SavedList'
 import ls from 'local-storage'
 
 class App extends React.Component {
@@ -16,13 +17,24 @@ class App extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.clearFields = this.clearFields.bind(this);
-    this.save = this.save.bind(this)
+    this.save = this.save.bind(this);
+    this.remove = this.remove.bind(this);
   }
 
   componentDidMount(){
     this.setState({
       saved: ls.get('saved') || []
     })
+  }
+
+  remove(e, index) {
+    if(e) e.preventDefault()
+    const { saved } = this.state
+    let newSaved = saved
+    newSaved.splice(index, 1)
+    this.setState(
+      { saved: newSaved },
+      () => { ls('saved', this.state.saved) });
   }
 
   save(e, index) {
@@ -60,7 +72,7 @@ class App extends React.Component {
   }
 
   render() {
-    let { city, state, concerts } = this.state;
+    let { city, state, concerts, saved } = this.state;
     return (
       <>
         <h1>Concerts?</h1>
@@ -68,6 +80,7 @@ class App extends React.Component {
         <input type="text" name="state" value={state} onChange={this.handleChange} placeholder="Enter your state here:"/>
         <button onClick={this.handleSubmit}>Search</button>
         <ConcertList concerts={concerts} save={this.save}/>
+        <SavedList saved={saved} remove={this.remove}/>
       </>
     )
   }
