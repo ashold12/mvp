@@ -37,18 +37,16 @@ class Concert extends React.Component {
       }
       return(
         <div onClick={this.clicker}>
-          <h6>{concert.title}</h6>
+          <h4>{concert.title}</h4>
           {this.state.clicked &&
             <>
-              <div>----------------------------------------------------------------------------------------------</div>
               <span>Address: {venue.formatted_address}  </span>
               <button onClick={openMap}>Directions</button><br /><br />
-              <div>Name: {venue.name}</div><br />
+              <div>At: {venue.name}</div><br />
               <div>Date: {concert.start.substring(0,10)}</div><br />
               {save ?
                 <button onClick={ (e) => {save(e, index)} }>Save</button> :
                 <button onClick={ (e) => {remove(e, index)} }>Delete</button> }
-              <div>----------------------------------------------------------------------------------------------</div>
             </>
           }
         </div>

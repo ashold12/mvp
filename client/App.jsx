@@ -89,11 +89,15 @@ class App extends React.Component {
     return (
       <>
         <h1>Concerts?</h1>
-        <input type="text" name="city" value={city} onChange={this.handleChange} placeholder="Enter your city here:"/>
-        <input type="text" name="state" value={state} onChange={this.handleChange} placeholder="Enter your state here:"/>
-        <button onClick={this.handleSubmit}>Search</button>
-        <ConcertList concerts={concerts} save={this.save}/>
-        <SavedList saved={saved} remove={this.remove}/>
+        <div className="search-concerts">
+          <input type="text" name="city" value={city} onChange={this.handleChange} placeholder="Enter your city here:"/>
+          <input type="text" name="state" value={state} onChange={this.handleChange} placeholder="Enter your state here:"/>
+          <button onClick={this.handleSubmit}>Search</button>
+        </div>
+        <div className="concert-parent">
+          <ConcertList concerts={concerts} save={this.save}/>
+          <SavedList saved={saved} remove={this.remove}/>
+        </div>
       </>
     )
   }

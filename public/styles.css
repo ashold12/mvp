@@ -1,0 +1,26 @@
+h1 {
+  text-align: center;
+}
+
+
+.concert-parent {
+  margin-left: 32%;
+  display: flex;
+}
+
+.searched-concerts {
+  float: left;
+  width: 40%;
+}
+
+.saved-concerts {
+  float: right;
+  width: 40%;
+}
+
+.search-concerts {
+  margin-left: 40%;
+  width: 50%;
+}
+
+
